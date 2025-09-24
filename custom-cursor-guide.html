@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Quick Guide to a Custom Cursor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="scroll-progress"></div>
+    <div class="particles"></div>
+
+    <div class="main-content">
+        <header class="navbar">
+            <a href="../index.html#about">About</a>
+            <a href="../index.html#projects">Projects</a>
+            <a href="../blog.html">Blog</a>
+            <a href="../index.html#contact">Contact</a>
+        </header>
+
+        <section class="post-content-section">
+            <h1 class="post-title">A Quick Guide to Implementing a Custom Cursor</h1>
+            <p class="post-meta">Published: September 24, 2025</p>
+            
+            <div class="post-body">
+                <p>Welcome to my first blog post! A custom cursor is a great way to add a unique, interactive element to a website. It provides a more personal touch and improves user experience by drawing attention to interactive elements. Here's a detailed look at how I implemented the one on my portfolio using just a little bit of HTML, CSS, and JavaScript.</p>
+                
+                <h2>1. The HTML Structure</h2>
+                <p>The foundation of the effect requires two simple `div` elements placed at the top of your `body` tag. The first, `.cursor`, is the main, smaller cursor dot, and the second, `.cursor-follower`, is the larger, trailing element that creates the smooth hover effect.</p>
+                <pre><code>&lt;!-- Custom cursor --&gt;
+&lt;div class="cursor"&gt;&lt;/div&gt;
+&lt;div class="cursor-follower"&gt;&lt;/div&gt;</code></pre>
+
+                <h2>2. The CSS Styling</h2>
+                <p>The CSS is crucial for positioning and styling the cursors. We need to make them invisible to the user's mouse and ensure they stay on top of all other content.</p>
+                <pre><code>.cursor, .cursor-follower {
+    /* Ensures they stay in view regardless of scroll */
+    position: fixed; 
+    
+    /* Makes the cursor always visible on top of other elements */
+    z-index: 9999;
+    
+    /* Prevents the cursor from blocking clicks on elements beneath it */
+    pointer-events: none;
+    
+    /* Initially centers them at the same point */
+    top: 50%;
+    left: 50%;
+}
+
+.cursor {
+    width: 8px;
+    height: 8px;
+    background-color: #007bff;
+    border-radius: 50%;
+}
+
+.cursor-follower {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(0, 123, 255, 0.4);
+    border-radius: 50%;
+    transition: transform 0.15s ease-out; /* This creates the smooth, delayed motion */
+}</code></pre>
+
+                <h2>3. The JavaScript Logic</h2>
+                <p>The magic happens in JavaScript, where we track the mouse's position and update the cursors accordingly. The `requestAnimationFrame` function is used for performance, ensuring the animations are smooth and efficient.</p>
+                <pre><code>const cursor = document.querySelector('.cursor');
+const cursorFollower = document.querySelector('.cursor-follower');
+let posX = 0, posY = 0;
+let mouseX = 0, mouseY = 0;
+
+function animateCursor() {
+    // Calculates the distance between the mouse and the follower's current position
+    posX += (mouseX - posX) / 9; 
+    posY += (mouseY - posY) / 9;
+
+    // Updates the follower's position smoothly
+    cursorFollower.style.transform = `translate3d(${posX - 20}px, ${posY - 20}px, 0)`;
+    cursor.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
+
+    // Requests the browser to call the function again for the next frame
+    requestAnimationFrame(animateCursor);
+}
+
+// Listens for mouse movement and updates the target positions
+window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+// Starts the animation loop
+animateCursor();</code></pre>
+                
+                <p>I hope this deep dive was helpful! By breaking down a seemingly complex effect, we can see it's really a combination of simple, well-defined components working together. Stay tuned for more posts about my projects and development journey!</p>
+            </div>
+        </section>
+        
+        <section id="contact" class="contact-section">
+            <h2 class="section-title hidden">Let's Connect</h2>
+            <form class="contact-form hidden" id="contact-form">
+                <div class="form-group">
+                    <input type="text" name="from_name" class="form-input" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="from_email" class="form-input" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" class="form-textarea" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <div class="social-links hidden">
+                <a href="https://github.com/rohit978" target="_blank" class="social-link">🐙</a>
+                <a href="#" target="_blank" class="social-link">💼</a>
+                <a href="#" target="_blank" class="social-link">✉️</a>
+                <a href="#" target="_blank" class="social-link">🐦</a>
+            </div>
+        </section>
+    </div>
+
+    <script src="../main.js"></script>
+</body>
+</html>
