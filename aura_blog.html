@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA - Music Recommendation System | Rohit Kumar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="scroll-progress"></div>
+    <div class="particles"></div>
+
+    <div class="main-content">
+        <header class="navbar">
+            <a href="index.html#about">About</a>
+            <a href="index.html#projects">Projects</a>
+            <a href="blog.html">Blog</a>
+            <a href="index.html#contact">Contact</a>
+        </header>
+
+        <section class="post-content-section">
+            <h1 class="post-title">AURA: Building an Intelligent Music Recommendation System</h1>
+            <p class="post-meta">Published: December 15, 2024</p>
+            
+            <div class="post-body">
+                <p>Music discovery has always been a passion of mine, and I wanted to build something that could help others find their next favorite song. That's how <strong>AURA</strong> was born—an intelligent music recommendation system that combines the power of YouTube scraping with custom machine learning models to deliver personalized music suggestions.</p>
+                
+                <h2>The Inspiration</h2>
+                <p>Most music recommendation systems rely on third-party APIs that can be expensive, limited, or require extensive permissions. I wanted to create something more accessible and transparent. AURA scrapes music directly from YouTube, making it free and open, while using our own machine learning model to understand user preferences and deliver tailored recommendations.</p>
+
+                <h2>Architecture Overview</h2>
+                <p>AURA is built with a multi-layered architecture designed for scalability and performance:</p>
+                
+                <h3>1. Music Scraping Layer</h3>
+                <p>The foundation of AURA is its YouTube scraping engine. This component searches YouTube for music tracks, extracts metadata (title, artist, duration, thumbnail), and retrieves audio streams. The scraping is done efficiently to minimize bandwidth and ensure quick results:</p>
+                <pre><code># Example scraping workflow
+1. User searches for a song or artist
+2. System queries YouTube API/Search
+3. Extract video metadata and audio URLs
+4. Store relevant information in database
+5. Queue for audio processing (if needed)</code></pre>
+                <p>This approach gives us access to a vast library of music without the constraints of traditional music APIs. However, it also comes with challenges around copyright and content availability that we've addressed through careful implementation.</p>
+
+                <h3>2. Machine Learning Recommendation Engine</h3>
+                <p>The heart of AURA is our custom ML model that analyzes user listening patterns, song features, and contextual data to make intelligent recommendations. The model considers several factors:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li><strong>Audio Features:</strong> Tempo, key, energy, danceability, and mood characteristics extracted from audio signals</li>
+                    <li><strong>User Behavior:</strong> Listening history, skip patterns, repeat plays, and session duration</li>
+                    <li><strong>Collaborative Filtering:</strong> Similar users' preferences and trending patterns</li>
+                    <li><strong>Content-Based Filtering:</strong> Similarity between songs based on audio characteristics</li>
+                </ul>
+                <pre><code># ML Model Architecture (Simplified)
+Input: User listening history + Song features
+  ↓
+Feature Extraction Layer
+  ↓
+Embedding Layer (Converts songs/users to vectors)
+  ↓
+Neural Network (Deep learning layers)
+  ↓
+Recommendation Scores
+  ↓
+Output: Ranked list of recommended songs</code></pre>
+
+                <h3>3. Audio Processing Pipeline</h3>
+                <p>To extract meaningful features from music, we process audio files through several stages:</p>
+                <pre><code># Audio Feature Extraction Pipeline
+1. Audio Format Conversion (standardize format)
+2. Spectral Analysis (FFT to frequency domain)
+3. Feature Extraction:
+   - Mel-frequency cepstral coefficients (MFCC)
+   - Chroma features (musical key detection)
+   - Tempo and rhythm analysis
+   - Energy and amplitude features
+4. Feature Vector Generation
+5. Storage in feature database</code></pre>
+                <p>These features become the input to our ML model, allowing it to understand the musical characteristics that make songs similar or appealing to specific users.</p>
+
+                <h2>Building the ML Model</h2>
+                <p>Developing the recommendation model was both challenging and rewarding. Here's how I approached it:</p>
+
+                <h3>Data Collection & Preparation</h3>
+                <p>First, I gathered a diverse dataset of music tracks with associated metadata. This included genre labels, user interaction data (from testing), and extracted audio features. Data preprocessing involved:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li>Normalizing audio features to comparable scales</li>
+                    <li>Handling missing data and outliers</li>
+                    <li>Creating user-song interaction matrices</li>
+                    <li>Balancing the dataset to avoid bias toward popular songs</li>
+                </ul>
+
+                <h3>Model Training</h3>
+                <p>I experimented with several ML approaches:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li><strong>Matrix Factorization:</strong> Traditional collaborative filtering using techniques like SVD</li>
+                    <li><strong>Neural Collaborative Filtering:</strong> Deep learning models that learn user-item interactions</li>
+                    <li><strong>Hybrid Approach:</strong> Combining content-based and collaborative filtering</li>
+                </ul>
+                <p>The final model uses a hybrid approach with a neural network architecture that can learn complex patterns in user preferences while incorporating audio feature analysis.</p>
+
+                <h2>Technical Stack</h2>
+                <p>AURA is built using a modern technology stack:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li><strong>Backend:</strong> Python with Flask/FastAPI for the API server</li>
+                    <li><strong>ML Framework:</strong> TensorFlow/PyTorch for model training and inference</li>
+                    <li><strong>Audio Processing:</strong> Librosa for audio analysis and feature extraction</li>
+                    <li><strong>Scraping:</strong> yt-dlp for YouTube content extraction</li>
+                    <li><strong>Database:</strong> PostgreSQL/MongoDB for storing user data and metadata</li>
+                    <li><strong>Frontend:</strong> React/Vue.js for the user interface</li>
+                    <li><strong>Deployment:</strong> Docker containers for easy deployment and scaling</li>
+                </ul>
+
+                <h2>Challenges & Solutions</h2>
+                <p>Building AURA wasn't without its challenges:</p>
+
+                <h3>1. YouTube Scraping Reliability</h3>
+                <p><strong>Challenge:</strong> YouTube's API limitations and rate limiting could disrupt the service.</p>
+                <p><strong>Solution:</strong> Implemented a robust caching system, rate limiting on our end, and fallback mechanisms. We also cache frequently accessed content to reduce API calls.</p>
+
+                <h3>2. Audio Feature Extraction Performance</h3>
+                <p><strong>Challenge:</strong> Processing audio files is computationally expensive and time-consuming.</p>
+                <p><strong>Solution:</strong> Built an asynchronous processing pipeline using background workers (Celery) and optimized feature extraction algorithms. Features are pre-computed and stored to avoid redundant processing.</p>
+
+                <h3>3. Cold Start Problem</h3>
+                <p><strong>Challenge:</strong> New users have no listening history, making it hard to provide good recommendations.</p>
+                <p><strong>Solution:</strong> Implemented a hybrid approach that uses content-based recommendations for new users, gradually transitioning to collaborative filtering as data accumulates.</p>
+
+                <h3>4. Model Accuracy & Real-time Inference</h3>
+                <p><strong>Challenge:</strong> Balancing model complexity (accuracy) with inference speed for real-time recommendations.</p>
+                <p><strong>Solution:</strong> Used model quantization and optimization techniques. Pre-computed embeddings for popular songs allow fast similarity searches, while the full model runs asynchronously for personalized ranking.</p>
+
+                <h2>Features & Capabilities</h2>
+                <p>AURA offers several key features:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li><strong>Smart Recommendations:</strong> Personalized song suggestions based on listening history</li>
+                    <li><strong>Discover Mode:</strong> Explore new genres and artists similar to your preferences</li>
+                    <li><strong>Playlist Generation:</strong> Auto-create playlists based on mood, genre, or activity</li>
+                    <li><strong>Real-time Playback:</strong> Stream music directly from YouTube with minimal latency</li>
+                    <li><strong>User Profiles:</strong> Track listening history and preferences over time</li>
+                    <li><strong>Trending & Popular:</strong> Discover what's popular among similar users</li>
+                </ul>
+
+                <h2>Learning & Growth</h2>
+                <p>Building AURA has been an incredible learning experience. I've deepened my understanding of:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li>Machine learning model development and optimization</li>
+                    <li>Audio signal processing and feature extraction</li>
+                    <li>Recommendation system algorithms and architectures</li>
+                    <li>Scalable system design and performance optimization</li>
+                    <li>API integration and web scraping best practices</li>
+                </ul>
+
+                <h2>Future Enhancements</h2>
+                <p>AURA is an ongoing project with exciting possibilities for the future:</p>
+                <ul style="margin-left: 30px; margin-bottom: 25px; line-height: 1.8;">
+                    <li><strong>Advanced ML Models:</strong> Experimenting with transformer-based models for sequence-aware recommendations</li>
+                    <li><strong>Social Features:</strong> User followings, shared playlists, and collaborative filtering improvements</li>
+                    <li><strong>Multi-platform Support:</strong> Extend beyond YouTube to other music sources</li>
+                    <li><strong>Mobile App:</strong> Native iOS and Android applications</li>
+                    <li><strong>Offline Mode:</strong> Cache and play music offline for premium users</li>
+                    <li><strong>Voice Integration:</strong> Voice commands for hands-free music control</li>
+                </ul>
+
+                <h2>Final Thoughts</h2>
+                <p>AURA represents the intersection of my interests in machine learning, web development, and music. It's been rewarding to build something that combines cutting-edge ML techniques with practical user experience. The challenges have pushed me to learn new technologies and problem-solving approaches.</p>
+                
+                <p>If you're interested in building recommendation systems or working with audio processing, I'd encourage you to start with a small prototype and iterate. The field of music recommendation is constantly evolving, and there's always something new to learn.</p>
+
+                <p>Feel free to check out the project and let me know your thoughts. Music discovery should be personal, intelligent, and accessible—that's what AURA aims to deliver.</p>
+            </div>
+        </section>
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
+

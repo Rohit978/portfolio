@@ -385,4 +385,145 @@
                 }
             `;
             document.head.appendChild(style);
+
+            // Interactive Portfolio Cat
+            const portfolioCat = document.getElementById('portfolioCat');
+            const catSpeechBubble = document.getElementById('catSpeechBubble');
+            const catMessage = document.getElementById('catMessage');
+            
+            if (portfolioCat && catMessage) {
+                let currentTipIndex = 0;
+                let isBubbleVisible = false;
+                
+                // Portfolio explanations/tips
+                const portfolioTips = [
+                    {
+                        message: "Hi! I'm your portfolio guide 🐱<br>Click me for tips!",
+                        section: 'intro'
+                    },
+                    {
+                        message: "👋 This is the hero section! Here you'll see Rohit's name and role. The typing animation shows different skills dynamically.",
+                        section: 'hero'
+                    },
+                    {
+                        message: "💼 The About section showcases skills in Full Stack Development, Cybersecurity, Data Science, and Innovation. Each card highlights different expertise areas.",
+                        section: 'about'
+                    },
+                    {
+                        message: "🚀 Projects section features amazing work like PM Internship Portal, PrepGen, and AURA - an ML-powered music recommendation system!",
+                        section: 'projects'
+                    },
+                    {
+                        message: "📧 Contact section lets visitors send messages. Connect via GitHub, LinkedIn, or email!",
+                        section: 'contact'
+                    },
+                    {
+                        message: "✨ The portfolio has smooth animations, custom cursor effects, and a particle background for a modern feel!",
+                        section: 'features'
+                    },
+                    {
+                        message: "🎨 Color scheme: Deep blue (#3651a8) and coral red (#ff6b6b) create a professional yet vibrant aesthetic.",
+                        section: 'design'
+                    },
+                    {
+                        message: "📱 The portfolio is fully responsive! Try resizing your browser to see how it adapts to different screen sizes.",
+                        section: 'responsive'
+                    }
+                ];
+                
+                // Show a tip
+                function showTip(index) {
+                    if (index >= 0 && index < portfolioTips.length) {
+                        catMessage.innerHTML = portfolioTips[index].message;
+                        portfolioCat.classList.add('active');
+                        isBubbleVisible = true;
+                    }
+                }
+                
+                // Hide tip
+                function hideTip() {
+                    portfolioCat.classList.remove('active');
+                    isBubbleVisible = false;
+                }
+                
+                // Toggle tip visibility
+                portfolioCat.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (isBubbleVisible) {
+                        // Cycle to next tip
+                        currentTipIndex = (currentTipIndex + 1) % portfolioTips.length;
+                        showTip(currentTipIndex);
+                    } else {
+                        // Show current tip
+                        showTip(currentTipIndex);
+                    }
+                });
+                
+                // Detect which section user is viewing
+                const sections = {
+                    'hero': document.querySelector('.hero-section'),
+                    'about': document.querySelector('#about'),
+                    'projects': document.querySelector('#projects'),
+                    'contact': document.querySelector('#contact')
+                };
+                
+                // Observer for section changes
+                const sectionObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+                            const sectionId = entry.target.id || entry.target.className.split(' ')[0];
+                            const tip = portfolioTips.find(t => t.section === sectionId);
+                            
+                            if (tip && !isBubbleVisible) {
+                                currentTipIndex = portfolioTips.indexOf(tip);
+                                setTimeout(() => {
+                                    showTip(currentTipIndex);
+                                    portfolioCat.classList.add('pulse');
+                                    setTimeout(() => {
+                                        portfolioCat.classList.remove('pulse');
+                                    }, 500);
+                                }, 500);
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.3
+                });
+                
+                // Observe sections
+                Object.values(sections).forEach(section => {
+                    if (section) sectionObserver.observe(section);
+                });
+                
+                // Hide bubble when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (isBubbleVisible && !portfolioCat.contains(e.target)) {
+                        hideTip();
+                    }
+                });
+                
+                // Initial welcome message after page load
+                setTimeout(() => {
+                    if (!isBubbleVisible) {
+                        showTip(0);
+                        setTimeout(() => {
+                            hideTip();
+                        }, 5000);
+                    }
+                }, 3000);
+                
+                // Show random tip on scroll (less frequently)
+                let lastScrollTip = 0;
+                window.addEventListener('scroll', () => {
+                    const now = Date.now();
+                    if (now - lastScrollTip > 15000 && !isBubbleVisible && Math.random() > 0.95) {
+                        currentTipIndex = Math.floor(Math.random() * portfolioTips.length);
+                        showTip(currentTipIndex);
+                        lastScrollTip = now;
+                        setTimeout(() => {
+                            hideTip();
+                        }, 4000);
+                    }
+                });
+            }
         });
