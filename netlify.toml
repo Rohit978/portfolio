@@ -2,6 +2,46 @@
   command = "npm run build"
   publish = "dist"
 
+# Proxy TESS UI HTML
+[[redirects]]
+  from = "/tess-demo/*"
+  to = "http://35.232.232.174:8000/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/tess-demo"
+  to = "http://35.232.232.174:8000/"
+  status = 200
+  force = true
+
+# Proxy TESS static assets
+[[redirects]]
+  from = "/static/*"
+  to = "http://35.232.232.174:8000/static/:splat"
+  status = 200
+  force = true
+
+# Proxy common TESS API endpoints
+[[redirects]]
+  from = "/chat"
+  to = "http://35.232.232.174:8000/chat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/chat/*"
+  to = "http://35.232.232.174:8000/chat/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://35.232.232.174:8000/api/:splat"
+  status = 200
+  force = true
+
+# Required fallback for React Router and SPA history
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { X, Maximize2, Minimize2, Terminal as TermIcon } from 'lucide-react';
 
-const TESS_DEMO_URL = 'http://35.232.232.174:8000/?mode=portfolio_demo';
+const TESS_DEMO_URL = '/tess-demo/?mode=portfolio_demo';
 
 export default function TessModal({ isOpen, onClose }) {
     const iframeRef = useRef(null);
